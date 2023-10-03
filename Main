@@ -1,0 +1,516 @@
+warn('[TEMPEST HUB] Loading Bypass')
+wait(1)
+warn('[TEMPEST HUB] Loading Ui')
+wait(1)
+
+local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
+
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+
+local Window = Library:CreateWindow({
+    Title = 'Tempest Hub | Elemental Dungeons',
+    Center = true,
+    AutoShow = true,
+    TabPadding = 8,
+    MenuFadeTime = 0.2
+})
+
+function autoTpchest()
+    while getgenv().autoTpchest == true do
+        local workspace = game:GetService("Workspace")
+        local player = game.Players.LocalPlayer
+        local humanoidRootPart = player.Character:WaitForChild("HumanoidRootPart")
+        
+        -- Lista de nomes de baús
+        local chestNames = {
+            "Chest1", "Chest2", "Chest3", "Chest4", "Chest5", "Chest6", "Chest7", "Chest8", "Chest9", "Chest10", "Chest11"
+        }
+        
+        -- Função para encontrar um baú por nome
+        local function findChestByName(name)
+            return workspace.Chests:FindFirstChild(name)
+        end
+        
+        -- Procurar pelos baús
+        local foundCFrame = nil
+        for i, chestName in ipairs(chestNames) do
+            local chest = findChestByName(chestName)
+            if chest then
+                foundCFrame = chest.CFrame
+                print("CFrame do Chest " .. i .. ": " .. tostring(foundCFrame)) -- Corrigi a concatenação aqui
+                break -- Sai do loop assim que um baú for encontrado
+            end
+        end
+        
+        -- Verificar se um baú foi encontrado
+        if foundCFrame then
+            humanoidRootPart.CFrame = CFrame.new(foundCFrame.Position)
+            game:GetService('VirtualInputManager'):SendKeyEvent(true,'E',false,uwu)
+            wait()
+        else -- Removi o "end" extra que estava no seu código
+            print("Nenhum dos baús foi encontrado.")
+        end
+    end
+end       
+
+
+function autostartdg()
+    while getgenv().autostartdg == true do
+        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("DungeonService"):WaitForChild("RF"):WaitForChild("StartDungeon"):InvokeServer()
+        wait()
+    end
+end
+
+local function autofarm()
+    while getgenv().autofarm == true do
+        -- Função para criar um CFrame sem ajuste de altura e ângulo
+        function GetCFrame(obj)
+            local cframe = CFrame.new()
+            local objType = typeof(obj)
+            
+            if objType == "Vector3" then
+                cframe = CFrame.new(obj)
+            elseif objType == "table" then
+                cframe = CFrame.new(unpack(obj))
+            elseif objType == "string" then
+                local parts = {}
+                for val in obj:gmatch("[^,]+") do
+                    table.insert(parts, tonumber(val))
+                end
+                if #parts >= 3 then
+                    cframe = CFrame.new(unpack(parts))
+                end
+            elseif objType == "Instance" then
+                if obj:IsA("Model") then
+                    local rootPart = obj:FindFirstChild("HumanoidRootPart") or obj:FindFirstChild("Torso") -- Mude para o nome correto do RootPart
+                    if rootPart then
+                        cframe = rootPart.CFrame
+                    end
+                elseif obj:IsA("Part") then
+                    cframe = obj.CFrame
+                end
+            end
+            
+            return cframe
+        end
+        
+        -- Encontre o personagem chamado "UpperRankMoon"
+        local DesertBandit = game.Workspace.Mobs:FindFirstChild("[Lv. 1] Desert Bandit") or game.Workspace.Mobs:FindFirstChild("[Lv. 1] Desert Smasher") or game.Workspace.Mobs:FindFirstChild("[Lv. 1] Desert Striker") or game.Workspace.Mobs:FindFirstChild("Cursed Sentinel") -- Certifique-se de procurar no Workspace, não em Mobs
+        wait()
+        
+        local Jungle = game.Workspace.Mobs:FindFirstChild("[Lv. 35] Tribal Bandit") or game.Workspace.Mobs:FindFirstChild("[Lv. 35] Tribal Striker") or game.Workspace.Mobs:FindFirstChild("[Lv. 35] Angry Gorilla") or game.Workspace.Mobs:FindFirstChild("Cursed Sentinel")
+
+        -- Verifique se o personagem existe
+        if DesertBandit then
+            local cframeDoPersonagem = GetCFrame(DesertBandit) -- Sem ajuste de altura e ângulo
+            game.Players.LocalPlayer.Character:MoveTo(cframeDoPersonagem.p) -- Use MoveTo para mover o personagem
+            game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))
+            wait()
+        else
+            print('Error')
+            wait()
+        end
+    end
+end
+
+function autofarmjungle()
+    while getgenv().autofarmjungle == true do
+        function GetCFrame(obj, height, angle)
+            local cframe = CFrame.new()
+            local objType = typeof(obj)
+            
+            if objType == "Vector3" then
+                cframe = CFrame.new(obj)
+            elseif objType == "table" then
+                cframe = CFrame.new(unpack(obj))
+            elseif objType == "string" then
+                local parts = {}
+                for val in obj:gmatch("[^,]+") do
+                    table.insert(parts, tonumber(val))
+                end
+                if #parts >= 3 then
+                    cframe = CFrame.new(unpack(parts))
+                end
+            elseif objType == "Instance" then
+                if obj:IsA("Model") then
+                    local rootPart = obj:FindFirstChild("HumanoidRootPart") or obj:FindFirstChild("Torso") -- Mude para o nome correto do RootPart
+                    if rootPart then
+                        cframe = rootPart.CFrame
+                    end
+                elseif obj:IsA("Part") then
+                    cframe = obj.CFrame
+                end
+            end
+
+            -- Apply height and angle adjustments
+            if height then
+                cframe = cframe + Vector3.new(0, height, 0)
+            end
+            if angle then
+                cframe = cframe * CFrame.Angles(0, math.rad(angle), 0)
+            end
+            
+            return cframe
+        end
+
+        local Jungle = game.Workspace.Mobs:FindFirstChild("[Lv. 35] Tribal Bandit") or game.Workspace.Mobs:FindFirstChild("[Lv. 35] Tribal Striker") or game.Workspace.Mobs:FindFirstChild("[Lv. 35] Angry Gorilla") or game.Workspace.Mobs:FindFirstChild("[Lv. 35] Dart Monkey") or game.Workspace.Mobs:FindFirstChild("Primal Guardian")
+    
+        if Jungle then
+            local cframeDoPersonagem = GetCFrame(Jungle, 5, -45) -- With height and angle adjustments
+            game.Players.LocalPlayer.Character:MoveTo(cframeDoPersonagem.p) -- Use MoveTo to move the character
+            game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))
+            wait()
+        else
+            print('Error')
+            wait()
+        end
+    end
+end
+
+function autoDGToggle(Value)
+    if Value then
+        if selectdungeon == 'Ancient Tomb' then
+            getgenv().autofarm = Value
+            autofarm()
+        elseif selectdungeon == 'Jungle' then
+            getgenv().autofarmjungle = Value
+            autofarmjungle()
+        end
+    end
+end
+
+function autoretry()
+    while getgenv().autoretry == true do
+        local args = {
+            [1] = "Retry"
+        }
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("PartyService"):WaitForChild("RF"):WaitForChild("VoteOn"):InvokeServer(unpack(args))
+    end 
+end
+
+function autoupdef()
+    while getgenv().autoupdef == true do
+        local args = {
+            [1] = "Defense",
+            [2] = 1
+        }
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("InventoryService"):WaitForChild("RF"):WaitForChild("UpgradeSkill"):InvokeServer(unpack(args))
+    end
+end
+
+function autoupmagic()
+    while getgenv().autoupmagic == true do
+        local args = {
+            [1] = "MagicPower",
+            [2] = 1
+        }
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("InventoryService"):WaitForChild("RF"):WaitForChild("UpgradeSkill"):InvokeServer(unpack(args))
+    end
+end
+
+function autoupph()
+    while getgenv().autoupph == true do
+        local args = {
+            [1] = "PhysicalPower",
+            [2] = 1
+        }
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("InventoryService"):WaitForChild("RF"):WaitForChild("UpgradeSkill"):InvokeServer(unpack(args))
+    end
+end
+
+local function handlestory(dgname, dglevel, difficulty)
+    while getgenv()[dgname] == true do
+        local args = {
+            [1] = dglevel,
+            [2] = difficulty, -- Use 'difficulty' instead of 'difficulties'
+            [3] = "All",
+            [4] = "Normal"
+        }
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("PartyService"):WaitForChild("RF"):WaitForChild("CreateParty"):InvokeServer(unpack(args))
+    end
+end   
+
+local dglevels = {
+    ['Ancient Tomb'] = 'BeginnersDungeon',
+    ['Jungle'] = 'JungleDungeon',
+    ['Snow Castle'] = 'SnowCastleDungeon',
+}
+
+local difficulties = {
+    ['Easy'] = 'Easy',
+    ['Medium'] = 'Medium',
+    ['Hard'] = 'Hard',
+    ['Hell'] = 'Hell',
+    ['Hardcore'] = 'Hardcore',
+    ['Infinite'] = 'Infinite',
+}
+
+function autodgToggle()
+    local dglevel = dglevels[selectionDG]
+    local difficulty = difficulties[selectionDifficulty]
+
+    if selectionDG and selectionDifficulty then
+        getgenv()[selectionDG] = not getgenv()[selectionDG]
+        handlestory(selectionDG, dglevel, difficulty)
+    end
+end
+
+function rollone()
+    while getgenv().rollone == true do 
+        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("SummoningService"):WaitForChild("RF"):WaitForChild("SummonOnce"):InvokeServer()
+    end
+end
+
+
+function rollcodes()
+local args = {
+    [1] = "RefundSP"
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("CodesService"):WaitForChild("RF"):WaitForChild("RedeemCode"):InvokeServer(unpack(args))
+local args = {
+    [1] = "BETA"
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("CodesService"):WaitForChild("RF"):WaitForChild("RedeemCode"):InvokeServer(unpack(args))
+local args = {
+    [1] = "tyfor20kplayers"
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("CodesService"):WaitForChild("RF"):WaitForChild("RedeemCode"):InvokeServer(unpack(args))
+local args = {
+    [1] = "NEWCODE"
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("CodesService"):WaitForChild("RF"):WaitForChild("RedeemCode"):InvokeServer(unpack(args))
+local args = {
+    [1] = "SubToToadBoiGaming"
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("CodesService"):WaitForChild("RF"):WaitForChild("RedeemCode"):InvokeServer(unpack(args))
+local args = {
+    [1] = "TYFOR20KPLAYERS"
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("CodesService"):WaitForChild("RF"):WaitForChild("RedeemCode"):InvokeServer(unpack(args))
+end
+
+
+local Tabs = {
+    Main = Window:AddTab('Main'),
+}
+
+local LeftGroupBox = Tabs.Main:AddLeftGroupbox('Player')
+
+LeftGroupBox:AddToggle('Auto Start', {
+    Text = 'Auto Start',
+    Default = false,
+    Tooltip = 'Auto Start',
+    Callback = function(Value)
+        getgenv().autostartdg = Value
+        autostartdg()
+    end
+})
+
+LeftGroupBox:AddToggle('Auto Retry', {
+    Text = 'Auto Retry',
+    Default = false,
+    Tooltip = 'Auto Retry',
+    Callback = function(Value)
+        getgenv().autoretry = Value
+        autoretry()
+    end
+})
+
+local MyButton = LeftGroupBox:AddButton({
+    Text = 'Reedem Code',
+    Func = function()
+        rollcodes()
+    end,
+    DoubleClick = false,
+    Tooltip = 'Reedem Code'
+})
+
+local RightGroupBox = Tabs.Main:AddRightGroupbox('Stats')
+
+RightGroupBox:AddToggle('Auto Up Physical', {
+    Text = 'Auto Up Physical',
+    Default = false,
+    Tooltip = 'Auto Up Physical',
+    Callback = function(Value)
+        getgenv().autoupph = Value
+        autoupph()
+    end
+})
+
+RightGroupBox:AddToggle('Auto Up Magic', {
+    Text = 'Auto Up Magic',
+    Default = false,
+    Tooltip = 'Auto Up Magic',
+    Callback = function(Value)
+        getgenv().autoupmagic = Value
+        autoupmagic()
+    end
+})
+
+RightGroupBox:AddToggle('Auto Up Defense', {
+    Text = 'Auto Up Defense',
+    Default = false,
+    Tooltip = 'Auto Up Defense',
+    Callback = function(Value)
+        getgenv().autoupdef = Value
+        autoupdef()
+    end
+})
+
+local Tabs = {
+    Farm = Window:AddTab('Farm'),
+}
+
+local LeftGroupBox = Tabs.Farm:AddLeftGroupbox('Auto Farm')
+
+local selectionDG -- Define selectionDG and selectionDifficulty variables at the top level
+local selectionDifficulty
+
+local DungeonDropdown = LeftGroupBox:AddDropdown('Select Dungeon', {
+    Values = {
+        'Ancient Tomb',
+        'Jungle',
+        'Snow Castle'
+    },
+    Default = 1,
+    Multi = false,
+    Text = 'Select Dungeon',
+    Callback = function(Value)
+        selectionDG = Value
+    end
+})
+
+-- Add dropdown for selecting difficulty
+local difficultyDropdown = LeftGroupBox:AddDropdown('Select Difficulty', {
+    Values = {
+        'Easy',
+        'Medium',
+        'Hard',
+        'Hell',
+        'Hardcore',
+        'Infinite'
+    },
+    Default = 1,
+    Multi = false,
+    Text = 'Select Difficulty',
+    Callback = function(Value)
+        selectionDifficulty = Value
+    end
+})
+
+-- Add toggle button for Auto Story
+LeftGroupBox:AddToggle('Auto Enter Dungeon', {
+    Text = 'Auto Enter Dungeon',
+    Default = false,
+    Tooltip = 'Auto Enter Dungeon',
+    Callback = function()
+        autodgToggle()
+    end
+})
+
+local difficultyDropdown = LeftGroupBox:AddDropdown('Select Farm', {
+    Values = {
+        'Ancient Tomb',
+        'Jungle'
+    },
+    Default = 1,
+    Multi = false,
+    Text = 'Select Farm',
+    Callback = function(Value)
+        selectdungeon = Value
+    end
+})
+
+LeftGroupBox:AddToggle('Auto Farm', {
+    Text = 'Auto Farm',
+    Default = false,
+    Tooltip = 'Auto Farm',
+    Callback = function(Value)
+        autoDGToggle(Value)
+    end
+})
+
+local RightGroupbox = Tabs.Farm:AddRightGroupbox('Chest')
+
+RightGroupbox:AddToggle('Auto Tp Chest', {
+    Text = 'Auto Tp Chest',
+    Default = false,
+    Tooltip = 'Auto Tp Chest',
+    Callback = function(Value)
+        getgenv().autoTpchest = Value
+        autoTpchest()
+    end
+})
+
+
+Library:SetWatermarkVisibility(true)
+
+-- Example of dynamically-updating watermark with common traits (fps and ping)
+local FrameTimer = tick()
+local FrameCounter = 0;
+local FPS = 60;
+
+local WatermarkConnection = game:GetService('RunService').RenderStepped:Connect(function()
+    FrameCounter += 1;
+
+    if (tick() - FrameTimer) >= 1 then
+        FPS = FrameCounter;
+        FrameTimer = tick();
+        FrameCounter = 0;
+    end;
+
+    Library:SetWatermark(('Tempest Hub | %s fps | %s ms'):format(
+        math.floor(FPS),
+        math.floor(game:GetService('Stats').Network.ServerStatsItem['Data Ping']:GetValue())
+    ));
+end);
+
+local TabsUI = {
+    ['UI Settings'] = Window:AddTab('UI Settings'),
+}
+
+Library:OnUnload(function()
+    WatermarkConnection:Disconnect()
+    print('Unloaded!')
+    Library.Unloaded = true
+end)
+
+-- UI Settings
+local MenuGroup = TabsUI['UI Settings']:AddLeftGroupbox('Menu')
+
+
+MenuGroup:AddButton('Unload', function() Library:Unload() end)
+MenuGroup:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'End', NoUI = true, Text = 'Menu keybind' })
+
+-- Define a tabela 'Options'
+Library.ToggleKeybind = Options.MenuKeybind
+
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+
+ThemeManager:SetFolder('Tempest Hub')
+SaveManager:SetFolder('Tempest Hub/Elemental Dungeons')
+
+SaveManager:BuildConfigSection(TabsUI['UI Settings'])
+
+ThemeManager:ApplyToTab(TabsUI['UI Settings'])
+
+SaveManager:LoadAutoloadConfig()
+
+for i,v in pairs(getconnections(game.Players.LocalPlayer.Idled)) do
+    v:Disable()
+end
+warn('[TEMPEST HUB] Loaded')
